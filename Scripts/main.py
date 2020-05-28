@@ -6,14 +6,14 @@ now = datetime.now()
 
 mode, size = 'RGBA', (300, 300)
 
-def leftover(x, y):
-    """ Keep x within range y """
-    return sin(x) * y + y / 2
-    #return x % y
+def leftover(n, x, y):
+    """ Keep n between x and y inclusive. """
+    return sin(n) * (x + y) / 2 + (x + y) / 2
 
 
 def hex_convert(num):
-    """ Takes a number, converts it into base 16, in 6 digit format min/max. """
+    """ Takes a number num, converts it into base 16, in 6 digit format min/max, to be used in RGB format.
+    If num >= 16^6, it will not be properly represented, and instead only return the first 6 digits."""
     n = int(num)
     num = hex(abs(num))[2:]  # get the hex value minus the 0x
 
@@ -24,11 +24,11 @@ def hex_convert(num):
         if i in num:
             print(n, num)
 
-    return num[:2], num[2:4], num[4:]
+    return num[:2], num[2:4], num[4:6]
 
 
-def imageAND(a, b):
-    # display all pixels where the images overlap in exact value
+def imageAND(a, b, save = False):
+    """ Iterates over all pixels in images a and b, compares them, sets  """
     try:
         imgA = Image.open(f"{a}.png")
         imgB = Image.open(f"{b}.png")
@@ -52,16 +52,23 @@ def imageAND(a, b):
                 continue
             pMapNew[x, y] = (0, 0, 0, 0)
 
+    if save:
+        new.save(f"test-{now.strftime('%y_%m_%d_%H_%M_%S')}.png")
     new.show()
+    new.close()
 
 
-def fImage(function, size, save = False):
+def fImage(f, size, save = False):
+    """ Creates new image, each pixel's color being based on passed in function f of x, y coordinates of given pixel.
+    f : function = take 2 variables, x and y, and return a number. No complex or imaginary numbers can be passed in or returned.
+    size : tuple = (x axis width, y axis width) Default to (100, 100).
+    save : bool = save image after building it or not. Default to False."""
     img = Image.new("RGBA", size)
     pMap = img.load()
 
     for x in range(size[0]):
         for y in range(size[1]):
-            num = [leftover(int(i,16), 255) for i in hex_convert(round(function(x, y)))]
+            num = [leftover(int(i,16), 0, 255) for i in hex_convert(round(f(x, y)))]
             value = r, g, b, a = (num[0], num[1], num[2], 255)
             value = tuple(int(i) for i in value)
             pMap[x, y] = value
@@ -72,4 +79,18 @@ def fImage(function, size, save = False):
     img.close()
 
 
-fImage((lambda x, y: x * y), (100, 100), save = True)
+if __name__ == '__main__':
+    fImage(
+        (lambda x, y: sin(x) * sin(y) * x * y + x),
+        (1000, 1000),save=True
+    )
+
+    imageAND(
+        "images/cf2-test-20_05_27_19_31_34",
+        "images/cf2-test-20_05_27_19_30_55",
+        save=True
+    )
+
+else:
+    print("""function-mapper project:
+    Rendering 3D graphs of functions in color rather than height, using Pillow image manipulation.""")
