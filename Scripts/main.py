@@ -1,5 +1,5 @@
 from PIL import Image
-from math import sin, floor
+from math import sin
 from datetime import datetime
 
 now = datetime.now()
@@ -27,7 +27,7 @@ def hex_convert(num):
     return num[:2], num[2:4], num[4:6]
 
 
-def imageAND(a, b, save = False):
+def imageAND(a, b, save=False, show=False):
     """ Iterates over all pixels in images a and b, compares them, sets  """
     try:
         imgA = Image.open(f"{a}.png")
@@ -53,12 +53,13 @@ def imageAND(a, b, save = False):
             pMapNew[x, y] = (0, 0, 0, 0)
 
     if save:
-        new.save(f"image/imageAND-{now.strftime('%y_%m_%d_%H_%M_%S')}.png")
-    new.show()
+        new.save(f"images/imageAND/{now.strftime('%Y-%m-%d-%H-%M-%S')}.png")
+    if show:
+        new.show()
     new.close()
 
 
-def fImage(f, size, save = False):
+def fImage(f, size, save=False, show=False):
     """ Creates new image, each pixel's color being based on passed in function f of x, y coordinates of given pixel.
     f : function = take 2 variables, x and y, and return a number. No complex or imaginary numbers can be passed in or returned.
     size : tuple = (x axis width, y axis width) Default to (100, 100).
@@ -73,22 +74,23 @@ def fImage(f, size, save = False):
             value = tuple(int(i) for i in value)
             pMap[x, y] = value
 
-    img.show()
     if save:
-        img.save(f"images/fImage-{now.strftime('%y_%m_%d_%H_%M_%S')}.png")
+        img.save(f"images/fImage/{now.strftime('%Y-%m-%d-%H-%M-%S')}.png")
+    if show:
+        img.show()
     img.close()
 
 
 if __name__ == '__main__':
     fImage(
-        (lambda x, y: x * y + x * sin(x)),
+        (lambda x, y: x * y * sin(x)),
         (1000, 1000),
         save=True
     )
 
     imageAND(
-        "images/cf2-test-20_05_27_19_31_34",
-        "images/cf2-test-20_05_27_19_30_55",
+        "images/fImage_20-05-28-18-16-56",
+        "images/fImage_20-05-28-18-16-37",
         save=True
     )
 
