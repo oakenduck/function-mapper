@@ -53,7 +53,7 @@ def imageAND(a, b, save = False):
             pMapNew[x, y] = (0, 0, 0, 0)
 
     if save:
-        new.save(f"test-{now.strftime('%y_%m_%d_%H_%M_%S')}.png")
+        new.save(f"image/imageAND-{now.strftime('%y_%m_%d_%H_%M_%S')}.png")
     new.show()
     new.close()
 
@@ -75,7 +75,7 @@ def fImage(f, size, save = False):
 
     img.show()
     if save:
-        img.save(f"images/cf2-test-{now.strftime('%y_%m_%d_%H_%M_%S')}.png")
+        img.save(f"images/fImage-{now.strftime('%y_%m_%d_%H_%M_%S')}.png")
     img.close()
 
 
