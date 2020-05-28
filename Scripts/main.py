@@ -81,8 +81,9 @@ def fImage(f, size, save = False):
 
 if __name__ == '__main__':
     fImage(
-        (lambda x, y: sin(x) * sin(y) * x * y + x),
-        (1000, 1000),save=True
+        (lambda x, y: x * y + x * sin(x)),
+        (1000, 1000),
+        save=True
     )
 
     imageAND(
