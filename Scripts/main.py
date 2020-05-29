@@ -32,6 +32,7 @@ def imageAND(a, b, save=False, show=False):
     try:
         imgA = Image.open(f"{a}.png")
         imgB = Image.open(f"{b}.png")
+        print('Generating image now... ', end='')
     except FileNotFoundError:
         return print('One or more files not found.')
 
@@ -52,6 +53,8 @@ def imageAND(a, b, save=False, show=False):
                 continue
             pMapNew[x, y] = (0, 0, 0, 0)
 
+    print('done.')
+
     if save:
         new.save(f"images/imageAND/{now.strftime('%Y-%m-%d-%H-%M-%S')}.png")
     if show:
@@ -64,6 +67,7 @@ def fImage(f, size, save=False, show=False):
     f : function = take 2 variables, x and y, and return a number. No complex or imaginary numbers can be passed in or returned.
     size : tuple = (x axis width, y axis width) Default to (100, 100).
     save : bool = save image after building it or not. Default to False."""
+    print('Generating image now...', end=' ')
     img = Image.new("RGBA", size)
     pMap = img.load()
 
@@ -74,11 +78,22 @@ def fImage(f, size, save=False, show=False):
             value = tuple(int(i) for i in value)
             pMap[x, y] = value
 
+    print('done.')
+
     if save:
         img.save(f"images/fImage/{now.strftime('%Y-%m-%d-%H-%M-%S')}.png")
     if show:
         img.show()
     img.close()
+
+
+def demo():
+    """ Showcase example for the fImage function. """
+    fImage(
+    (lambda x, y : x * y * sin(x) * sin(y)),
+    (500, 500),
+    show = True
+    )
 
 
 if __name__ == '__main__':
@@ -95,5 +110,7 @@ if __name__ == '__main__':
     )
 
 else:
-    print("""function-mapper project:
-    Rendering 3D graphs of functions in color rather than height, using Pillow image manipulation.""")
+    print("""Project function-mapper:\n"""
+    """Rendering 3D graphs in color rather than height, using Pillow image manipulation.\n"""
+    """Try running main.demo() !"""
+    )
