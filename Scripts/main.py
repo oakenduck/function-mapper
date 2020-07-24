@@ -2,6 +2,8 @@ from PIL import Image
 from math import sin
 from datetime import datetime
 
+# hahah NzE2NDMxNDg2ODc3OTU4MTc2.XtLq0Q.IFe4RiyJ00Hk2MPxpSz5bA366gg
+
 now = datetime.now()
 
 mode, size = 'RGBA', (300, 300)
